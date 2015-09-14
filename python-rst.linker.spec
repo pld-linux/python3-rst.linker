@@ -12,7 +12,7 @@ Summary:	rst.linker - Python 2 Sphinx plugin to add links to the changelog
 Summary(pl.UTF-8):	rst.linker - wtyczka Sphinksa dla Pythona 2 do dodawania odnośników do changeloga
 Name:		python-rst.linker
 Version:	1.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.python.org/pypi/rst.linker
