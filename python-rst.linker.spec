@@ -20,7 +20,7 @@ Source0:	https://pypi.python.org/packages/source/r/rst.linker/rst.linker-%{versi
 # Source0-md5:	71f120eabb4c53277df78f3b15036d3d
 URL:		https://bitbucket.org/jaraco/rst.linker
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.616
+BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-hgtools
