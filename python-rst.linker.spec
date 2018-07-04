@@ -11,13 +11,13 @@
 Summary:	rst.linker - Python 2 Sphinx plugin to add links to the changelog
 Summary(pl.UTF-8):	rst.linker - wtyczka Sphinksa dla Pythona 2 do dodawania odnośników do changeloga
 Name:		python-rst.linker
-Version:	1.8.2
-Release:	2
+Version:	1.10
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.python.org/simple/rst.linker/
-Source0:	https://pypi.python.org/packages/95/a8/8efe7a856db37dd3ca95f434525741e90f6133b868ab57e61f410578607e/rst.linker-%{version}.tar.gz
-# Source0-md5:	783b4591bad3449d713b5b4428fb71d6
+Source0:	https://pypi.debian.net/rst.linker/rst.linker-%{version}.tar.gz
+# Source0-md5:	8627554c1e3ce427aa825a6ee2df9abd
 URL:		https://bitbucket.org/jaraco/rst.linker
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
@@ -86,9 +86,7 @@ Dokumentacja do modułu rst.linker.
 
 %build
 %if %{with python2}
-%py_build
-
-%{?with_tests:%{__python} -m pytest test_all.py}
+%py_build %{?with_tests:test}
 
 %if %{with doc}
 %{__python} setup.py build_sphinx
@@ -96,7 +94,7 @@ Dokumentacja do modułu rst.linker.
 %endif
 
 %if %{with python3}
-%py3_build
+%py3_build %{?with_tests:test}
 
 %{?with_tests:%{__python3} -m pytest test_all.py}
 %endif
@@ -122,9 +120,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGES.rst README.rst
 %dir %{py_sitescriptdir}/rst
-%{py_sitescriptdir}/rst/linker.py[co]
+%{py_sitescriptdir}/rst/*.py[co]
 %{py_sitescriptdir}/rst.linker-%{version}-py*.egg-info
-%{py_sitescriptdir}/rst.linker-%{version}-py*-nspkg.pth
 %endif
 
 %if %{with python3}
@@ -132,11 +129,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGES.rst README.rst
 %dir %{py3_sitescriptdir}/rst
-%{py3_sitescriptdir}/rst/linker.py
+%{py3_sitescriptdir}/rst/*.py
 %dir %{py3_sitescriptdir}/rst/__pycache__
-%{py3_sitescriptdir}/rst/__pycache__/linker.cpython-*.py[co]
+%{py3_sitescriptdir}/rst/__pycache__/*.cpython-*.py[co]
 %{py3_sitescriptdir}/rst.linker-%{version}-py*.egg-info
-%{py3_sitescriptdir}/rst.linker-%{version}-py*-nspkg.pth
 %endif
 
 %if %{with doc}
