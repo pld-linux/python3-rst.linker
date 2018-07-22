@@ -15,8 +15,8 @@ Version:	1.10
 Release:	1
 License:	MIT
 Group:		Libraries/Python
-#Source0Download: https://pypi.python.org/simple/rst.linker/
-Source0:	https://pypi.debian.net/rst.linker/rst.linker-%{version}.tar.gz
+#Source0Download: https://pypi.org/simple/rst.linker/
+Source0:	https://files.pythonhosted.org/packages/source/r/rst.linker/rst.linker-%{version}.tar.gz
 # Source0-md5:	8627554c1e3ce427aa825a6ee2df9abd
 URL:		https://bitbucket.org/jaraco/rst.linker
 %if %{with python2}
@@ -28,9 +28,15 @@ BuildRequires:	python-setuptools_scm >= 1.15.0
 BuildRequires:	python-dateutil
 BuildRequires:	python-path
 BuildRequires:	python-pytest >= 2.8
+BuildRequires:	python-pytest-flake8
 BuildRequires:	python-six
 %endif
-%{?with_doc:BuildRequires:	sphinx-pdg}
+%if %{with doc}
+BuildRequires:	python-Sphinx
+BuildRequires:	python-jaraco.packaging >= 3.2
+# needs to be already installed
+BuildRequires:	python-rst.linker >= 1.9
+%endif
 %endif
 %if %{with python3}
 BuildRequires:	python3-devel >= 1:3.2
@@ -41,6 +47,7 @@ BuildRequires:	python3-setuptools_scm >= 1.15.0
 BuildRequires:	python3-dateutil
 BuildRequires:	python3-path
 BuildRequires:	python3-pytest >= 2.8
+BuildRequires:	python3-pytest-flake8
 BuildRequires:	python3-six
 %endif
 %endif
@@ -86,15 +93,13 @@ Dokumentacja do modułu rst.linker.
 
 %build
 %if %{with python2}
-%py_build %{?with_tests:test}
+%py_build %{?with_doc:build_sphinx}
 
-%if %{with doc}
-%{__python} setup.py build_sphinx
-%endif
+%{?with_tests:%{__python} -m pytest test_all.py}
 %endif
 
 %if %{with python3}
-%py3_build %{?with_tests:test}
+%py3_build
 
 %{?with_tests:%{__python3} -m pytest test_all.py}
 %endif
@@ -118,7 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc CHANGES.rst README.rst
+%doc CHANGES.rst LICENSE README.rst
 %dir %{py_sitescriptdir}/rst
 %{py_sitescriptdir}/rst/*.py[co]
 %{py_sitescriptdir}/rst.linker-%{version}-py*.egg-info
@@ -127,7 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-rst.linker
 %defattr(644,root,root,755)
-%doc CHANGES.rst README.rst
+%doc CHANGES.rst LICENSE README.rst
 %dir %{py3_sitescriptdir}/rst
 %{py3_sitescriptdir}/rst/*.py
 %dir %{py3_sitescriptdir}/rst/__pycache__
@@ -138,5 +143,5 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with doc}
 %files apidocs
 %defattr(644,root,root,755)
-%doc build/sphinx/html/*
+%doc build-2/sphinx/html/{_static,*.html,*.js}
 %endif
