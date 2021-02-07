@@ -11,23 +11,25 @@
 Summary:	rst.linker - Python 2 Sphinx plugin to add links to the changelog
 Summary(pl.UTF-8):	rst.linker - wtyczka Sphinksa dla Pythona 2 do dodawania odnośników do changeloga
 Name:		python-rst.linker
-Version:	1.10
-Release:	2
+Version:	1.11
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/rst.linker/
 Source0:	https://files.pythonhosted.org/packages/source/r/rst.linker/rst.linker-%{version}.tar.gz
-# Source0-md5:	8627554c1e3ce427aa825a6ee2df9abd
-URL:		https://bitbucket.org/jaraco/rst.linker
+# Source0-md5:	9541a7debee1c5b4ac54350696082664
+URL:		https://github.com/jaraco/rst.linker
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-modules >= 1:2.7
-BuildRequires:	python-setuptools
+BuildRequires:	python-setuptools >= 1:31.0.1
 BuildRequires:	python-setuptools_scm >= 1.15.0
 %if %{with tests}
 BuildRequires:	python-dateutil
+BuildRequires:	python-importlib_metadata
 BuildRequires:	python-path
-BuildRequires:	python-pytest >= 2.8
+BuildRequires:	python-pytest >= 3.5
+BuildRequires:	python-pytest-black-multipy
 BuildRequires:	python-pytest-flake8
 BuildRequires:	python-six
 %endif
@@ -41,12 +43,16 @@ BuildRequires:	python-rst.linker >= 1.9
 %if %{with python3}
 BuildRequires:	python3-devel >= 1:3.2
 BuildRequires:	python3-modules >= 1:3.2
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-setuptools >= 1:31.0.1
 BuildRequires:	python3-setuptools_scm >= 1.15.0
 %if %{with tests}
 BuildRequires:	python3-dateutil
+%if "%{py3_ver}" < "3.8"
+BuildRequires:	python3-importlib_metadata
+%endif
 BuildRequires:	python3-path
-BuildRequires:	python3-pytest >= 2.8
+BuildRequires:	python3-pytest >= 3.5
+BuildRequires:	python3-pytest-black-multipy
 BuildRequires:	python3-pytest-flake8
 BuildRequires:	python3-six
 %endif
@@ -95,13 +101,21 @@ Dokumentacja do modułu rst.linker.
 %if %{with python2}
 %py_build %{?with_doc:build_sphinx}
 
-%{?with_tests:%{__python} -m pytest test_all.py}
+%if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTEST_PLUGINS="pytest_black_multipy,pytest_flake8" \
+%{__python} -m pytest test_all.py
+%endif
 %endif
 
 %if %{with python3}
 %py3_build
 
-%{?with_tests:%{__python3} -m pytest test_all.py}
+%if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTEST_PLUGINS="pytest_black,pytest_black_multipy,pytest_flake8" \
+%{__python3} -m pytest test_all.py
+%endif
 %endif
 
 %install
@@ -125,7 +139,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGES.rst LICENSE README.rst
 %dir %{py_sitescriptdir}/rst
-%{py_sitescriptdir}/rst/*.py[co]
+%{py_sitescriptdir}/rst/__init__.py[co]
+%{py_sitescriptdir}/rst/linker.py[co]
 %{py_sitescriptdir}/rst.linker-%{version}-py*.egg-info
 %endif
 
@@ -134,9 +149,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGES.rst LICENSE README.rst
 %dir %{py3_sitescriptdir}/rst
-%{py3_sitescriptdir}/rst/*.py
+%{py3_sitescriptdir}/rst/__init__.py
+%{py3_sitescriptdir}/rst/linker.py
 %dir %{py3_sitescriptdir}/rst/__pycache__
-%{py3_sitescriptdir}/rst/__pycache__/*.cpython-*.py[co]
+%{py3_sitescriptdir}/rst/__pycache__/__init__.cpython-*.py[co]
+%{py3_sitescriptdir}/rst/__pycache__/linker.cpython-*.py[co]
 %{py3_sitescriptdir}/rst.linker-%{version}-py*.egg-info
 %endif
 
