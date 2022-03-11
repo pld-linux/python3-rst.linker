@@ -6,13 +6,13 @@
 Summary:	rst.linker - Python 2 Sphinx plugin to add links to the changelog
 Summary(pl.UTF-8):	rst.linker - wtyczka Sphinksa dla Pythona 2 do dodawania odnośników do changeloga
 Name:		python3-rst.linker
-Version:	2.1.1
+Version:	2.2.0
 Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/rst.linker/
 Source0:	https://files.pythonhosted.org/packages/source/r/rst.linker/rst.linker-%{version}.tar.gz
-# Source0-md5:	584cb303fe398ac077905eed27eb043f
+# Source0-md5:	e769b8c34bfc2565a000d1d97543447d
 URL:		https://github.com/jaraco/rst.linker
 BuildRequires:	python3-devel >= 1:3.6
 BuildRequires:	python3-modules >= 1:3.6
@@ -26,13 +26,17 @@ BuildRequires:	python3-importlib_metadata
 %endif
 #BuildRequires:	python3-jaraco.test >= 3.2.0
 BuildRequires:	python3-path >= 13.1.0
-BuildRequires:	python3-pytest >= 3.5
+BuildRequires:	python3-pytest >= 4.6
 BuildRequires:	python3-pytest-black >= 0.3.7
+BuildRequires:	python3-pytest-cov
+#BuildRequires:	python3-pytest-checkdocs >= 2.4
+#BuildRequires:	python3-pytest-enabler >= 1.0.1
 BuildRequires:	python3-pytest-flake8
+#BuildRequires:	python3-pytest-mypy
 %endif
 %if %{with doc}
 BuildRequires:	python3-Sphinx
-BuildRequires:	python3-jaraco.packaging >= 3.2
+BuildRequires:	python3-jaraco.packaging >= 8.2
 # needs to be already installed
 BuildRequires:	python3-rst.linker >= 1.9
 %endif
