@@ -6,37 +6,40 @@
 Summary:	rst.linker - Python 2 Sphinx plugin to add links to the changelog
 Summary(pl.UTF-8):	rst.linker - wtyczka Sphinksa dla Pythona 2 do dodawania odnośników do changeloga
 Name:		python3-rst.linker
-Version:	2.2.0
+Version:	2.3.1
 Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/rst.linker/
 Source0:	https://files.pythonhosted.org/packages/source/r/rst.linker/rst.linker-%{version}.tar.gz
-# Source0-md5:	e769b8c34bfc2565a000d1d97543447d
+# Source0-md5:	10cd73d4200e7bbbdb621275ed15bffe
 URL:		https://github.com/jaraco/rst.linker
-BuildRequires:	python3-devel >= 1:3.6
-BuildRequires:	python3-modules >= 1:3.6
+BuildRequires:	python3-devel >= 1:3.7
+BuildRequires:	python3-modules >= 1:3.7
 BuildRequires:	python3-setuptools >= 1:42
 BuildRequires:	python3-setuptools_scm >= 3.4.1
 BuildRequires:	python3-toml
 %if %{with tests}
 BuildRequires:	python3-dateutil
+#BuildRequires:	python3-enabler >= 1.3
+#BuildRequires:	python3-flake8 < 5
 %if "%{py3_ver}" < "3.8"
 BuildRequires:	python3-importlib_metadata
 %endif
 #BuildRequires:	python3-jaraco.test >= 3.2.0
 BuildRequires:	python3-path >= 13.1.0
-BuildRequires:	python3-pytest >= 4.6
+BuildRequires:	python3-pytest >= 6
 BuildRequires:	python3-pytest-black >= 0.3.7
 BuildRequires:	python3-pytest-cov
 #BuildRequires:	python3-pytest-checkdocs >= 2.4
 #BuildRequires:	python3-pytest-enabler >= 1.0.1
 BuildRequires:	python3-pytest-flake8
-#BuildRequires:	python3-pytest-mypy
+#BuildRequires:	python3-pytest-mypy >= 0.9.1
+#BuildRequires:	python3-types-python-dateutil
 %endif
 %if %{with doc}
 BuildRequires:	python3-Sphinx
-BuildRequires:	python3-jaraco.packaging >= 8.2
+BuildRequires:	python3-jaraco.packaging >= 9
 # needs to be already installed
 BuildRequires:	python3-rst.linker >= 1.9
 %endif
@@ -66,6 +69,11 @@ Dokumentacja do modułu rst.linker.
 
 %prep
 %setup -q -n rst.linker-%{version}
+
+cat >setup.py <<EOF
+from setuptools import setup
+setup()
+EOF
 
 %build
 %py3_build %{?with_doc:build_sphinx}
